@@ -41,14 +41,7 @@ app.use(
       const allowedOrigins = [
         process.env.CLIENT_URL,
         "http://localhost:3000",
-        "https://seller.tiktok.com",
-        "https://seller-us.tiktok.com",
-        "https://seller-id.tiktok.com",
-        "https://seller-my.tiktok.com",
-        "https://seller-sg.tiktok.com",
-        "https://seller-ph.tiktok.com",
-        "https://seller-th.tiktok.com",
-        "https://seller-vn.tiktok.com",
+        "https://seller-id.tokopedia.com",
       ];
 
       if (
