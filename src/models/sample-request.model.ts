@@ -1,24 +1,28 @@
-import mongoose, { Schema, Document } from 'mongoose';
+import mongoose, { Schema, Document } from "mongoose";
 
 export interface ISampleRequest extends Document {
-    userId: mongoose.Types.ObjectId;
-    campaignId?: mongoose.Types.ObjectId;
-    affiliatorId?: mongoose.Types.ObjectId;
-    requestId: string;
-    productName: string;
-    sku: string;
-    affiliatorName: string;
-    affiliatorUsername: string; // Store username for matching
-    status: string;
-    requestDate: Date;
-    createdAt: Date;
-    updatedAt: Date;
+  userId: mongoose.Types.ObjectId;
+  campaignId?: mongoose.Types.ObjectId;
+  affiliatorId?: mongoose.Types.ObjectId;
+  requestId: string;
+  productName: string;
+  sku: string;
+  affiliatorName: string;
+  affiliatorUsername: string; // Store username for matching
+  affiliatorPhoneNumber: string;
+  courier: string;
+  trackingNumber: string;
+  status: string;
+  requestDate: Date;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
-const SampleRequestSchema = new Schema<ISampleRequest>({
-    userId: { type: Schema.Types.ObjectId, ref: 'User', required: true },
-    campaignId: { type: Schema.Types.ObjectId, ref: 'Campaign' }, // Optional (if outside campaign)
-    affiliatorId: { type: Schema.Types.ObjectId, ref: 'Affiliator' }, // Optional (if not registered)
+const SampleRequestSchema = new Schema<ISampleRequest>(
+  {
+    userId: { type: Schema.Types.ObjectId, ref: "User", required: true },
+    campaignId: { type: Schema.Types.ObjectId, ref: "Campaign" }, // Optional (if outside campaign)
+    affiliatorId: { type: Schema.Types.ObjectId, ref: "Affiliator" }, // Optional (if not registered)
 
     requestId: { type: String, required: true }, // Unique ID from TikTok
     productName: { type: String, required: true },
@@ -26,15 +30,22 @@ const SampleRequestSchema = new Schema<ISampleRequest>({
 
     affiliatorName: { type: String, required: true },
     affiliatorUsername: { type: String, required: true },
+    affiliatorPhoneNumber: { type: String, default: "" }, // New field
 
-    status: { type: String, default: 'Pending' },
+    courier: { type: String, default: "" }, // New field
+    trackingNumber: { type: String, default: "" }, // New field
+
+    status: { type: String, default: "" }, // Changed default
     requestDate: { type: Date, default: Date.now },
-
-}, { timestamps: true });
+  },
+  { timestamps: true },
+);
 
 // Compound index to prevent duplicate syncing for same user & request
 SampleRequestSchema.index({ userId: 1, requestId: 1 }, { unique: true });
 SampleRequestSchema.index({ campaignId: 1 });
 SampleRequestSchema.index({ affiliatorId: 1 });
 
-export const SampleRequest = mongoose.models.SampleRequest || mongoose.model<ISampleRequest>('SampleRequest', SampleRequestSchema);
+export const SampleRequest =
+  mongoose.models.SampleRequest ||
+  mongoose.model<ISampleRequest>("SampleRequest", SampleRequestSchema);
