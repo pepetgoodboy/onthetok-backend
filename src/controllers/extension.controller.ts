@@ -157,4 +157,20 @@ export const extensionController = {
         .json({ success: false, message: "Internal Server Error" });
     }
   },
+  // 3. Get Existing Order IDs (For Duplicate Check)
+  getExistingIds: async (req: Request, res: Response) => {
+    try {
+      const user = res.locals.user;
+      const existing = await SampleRequest.find({ userId: user.id })
+        .select("requestId")
+        .lean();
+      const ids = existing.map((r: any) => r.requestId);
+      res.json({ success: true, ids });
+    } catch (error: any) {
+      console.error("Get Existing IDs Error:", error);
+      res
+        .status(500)
+        .json({ success: false, message: "Internal Server Error" });
+    }
+  },
 };

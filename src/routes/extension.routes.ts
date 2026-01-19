@@ -16,5 +16,10 @@ router.post(
   requireExtensionAuth,
   extensionController.syncSamples,
 );
+router.get(
+  "/existing-ids",
+  requireExtensionAuth,
+  extensionController.getExistingIds,
+);
 
 export default router;
