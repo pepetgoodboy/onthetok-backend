@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import { auth } from "../config/auth";
 import { fromNodeHeaders } from "better-auth/node";
+import jwt from "jsonwebtoken";
 
 export const requireAuth = async (
   req: Request,
@@ -74,9 +75,6 @@ export const requireExtensionAuth = async (
     }
 
     const token = authHeader.split(" ")[1];
-
-    // Import jwt here
-    const jwt = require("jsonwebtoken");
 
     if (!process.env.JWT_SECRET) {
       console.error("[ExtAuth] CRITICAL: JWT_SECRET is not defined!");
