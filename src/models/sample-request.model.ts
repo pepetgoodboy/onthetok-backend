@@ -12,6 +12,7 @@ export interface ISampleRequest extends Document {
   affiliatorPhoneNumber: string;
   courier: string;
   trackingNumber: string;
+  qty: number;
   status: string;
   requestDate: Date;
   createdAt: Date;
@@ -27,6 +28,7 @@ const SampleRequestSchema = new Schema<ISampleRequest>(
     requestId: { type: String, required: true }, // Unique ID from TikTok
     productName: { type: String, required: true },
     sku: { type: String, required: true },
+    qty: { type: Number, default: 1 },
 
     affiliatorName: { type: String, required: true },
     affiliatorUsername: { type: String, required: true },

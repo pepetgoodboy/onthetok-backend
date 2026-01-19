@@ -132,6 +132,7 @@ export const extensionController = {
             requestId: item.requestId,
             productName: item.productName,
             sku: item.sku,
+            qty: item.qty || 1,
             affiliatorName: item.affiliatorName,
             affiliatorUsername: item.affiliatorUsername,
             affiliatorPhoneNumber: item.affiliatorPhoneNumber || "",
