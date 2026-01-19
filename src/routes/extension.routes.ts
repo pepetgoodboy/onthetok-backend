@@ -1,6 +1,9 @@
 import { Router } from "express";
 import { extensionController } from "../controllers/extension.controller";
-import { requireAuth } from "../middlewares/auth.middleware";
+import {
+  requireAuth,
+  requireExtensionAuth,
+} from "../middlewares/auth.middleware";
 
 const router = Router();
 
@@ -8,6 +11,10 @@ const router = Router();
 router.post("/verify-license", extensionController.verifyLicense);
 
 // Protected: Sync Samples (Requires Token)
-router.post("/sync-samples", requireAuth, extensionController.syncSamples);
+router.post(
+  "/sync-samples",
+  requireExtensionAuth,
+  extensionController.syncSamples,
+);
 
 export default router;
