@@ -80,6 +80,7 @@ export const extensionController = {
           const existing = await SampleRequest.findOne({
             userId: user.id,
             requestId: item.requestId,
+            sku: item.sku,
           });
 
           if (existing) {

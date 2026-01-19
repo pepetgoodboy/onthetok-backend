@@ -43,8 +43,11 @@ const SampleRequestSchema = new Schema<ISampleRequest>(
   { timestamps: true },
 );
 
-// Compound index to prevent duplicate syncing for same user & request
-SampleRequestSchema.index({ userId: 1, requestId: 1 }, { unique: true });
+// Compound index to prevent duplicate syncing for same user & request & product
+SampleRequestSchema.index(
+  { userId: 1, requestId: 1, sku: 1 },
+  { unique: true },
+);
 SampleRequestSchema.index({ campaignId: 1 });
 SampleRequestSchema.index({ affiliatorId: 1 });
 
