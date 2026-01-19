@@ -62,6 +62,10 @@ export const requireExtensionAuth = async (
 ) => {
   try {
     const authHeader = req.headers.authorization;
+
+    // Debug Log
+    console.log("[ExtAuth] Header:", authHeader ? "Present" : "Missing");
+
     if (!authHeader || !authHeader.startsWith("Bearer ")) {
       res
         .status(401)
@@ -71,24 +75,30 @@ export const requireExtensionAuth = async (
 
     const token = authHeader.split(" ")[1];
 
-    // Import jwt here to avoid top-level dependency if not needed elsewhere, or ensure it's imported at top
+    // Import jwt here
     const jwt = require("jsonwebtoken");
 
-    const decoded = jwt.verify(token, process.env.JWT_SECRET!);
-
-    if (!decoded) {
+    if (!process.env.JWT_SECRET) {
+      console.error("[ExtAuth] CRITICAL: JWT_SECRET is not defined!");
       res
-        .status(401)
-        .json({ success: false, message: "Unauthorized: Invalid token" });
+        .status(500)
+        .json({
+          success: false,
+          message: "Server Error: Auth Configuration Missing",
+        });
       return;
     }
 
-    res.locals.user = decoded; // The payload usually contains user info
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+
+    console.log("[ExtAuth] Token verified for user:", (decoded as any).email);
+
+    res.locals.user = decoded;
     next();
-  } catch (error) {
-    console.error("Extension Auth Error:", error);
+  } catch (error: any) {
+    console.error("[ExtAuth] Verification Failed:", error.message);
     res
       .status(401)
-      .json({ success: false, message: "Unauthorized: Invalid token" });
+      .json({ success: false, message: `Unauthorized: ${error.message}` });
   }
 };
